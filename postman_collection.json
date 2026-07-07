@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "AI Questionnaire",
+    "description": "Manual test flow for the ai-questionnaire Spring Boot app. Run requests top to bottom inside the 'Happy path (Yes branch)' folder - sessionId is captured automatically after Create Session. Answers are deliberately phrased so they do NOT exactly match an option label/value, so each /answer call actually exercises the configured AIProvider instead of the exact-match shortcut.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "sessionId", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Happy path (Yes branch)",
+      "item": [
+        {
+          "name": "1. Create Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('sessionId', body.sessionId);",
+                  "pm.test('got a sessionId', () => pm.expect(body.sessionId).to.be.a('string'));",
+                  "console.log('First question:', body.question.question);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/session",
+              "host": ["{{baseUrl}}"],
+              "path": ["session"]
+            }
+          }
+        },
+        {
+          "name": "2. Answer Q1 - Country",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"I currently live in Dhaka\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: answers.country = \"Bangladesh\", nextQuestion = age group."
+          }
+        },
+        {
+          "name": "3. Answer Q2 - Age group",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"I just turned twenty seven\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: answers.ageGroup = \"21-30\", nextQuestion = owns a car."
+          }
+        },
+        {
+          "name": "4. Answer Q3 - Owns a car (Yes)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"Yeah, I bought my first car last year\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: answers.ownsCar = true (boolean), nextQuestion = car brand (branches here since answer is Yes)."
+          }
+        },
+        {
+          "name": "5. Answer Q4 - Car brand",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"It's a Japanese brand, made by Toyota\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: answers.carBrand = \"Toyota\", completed = true, nextQuestion = null."
+          }
+        },
+        {
+          "name": "6. Get Session State",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/session/{{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["session", "{{sessionId}}"]
+            },
+            "description": "Should show completed = true and the full collected answers map."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Other cases",
+      "item": [
+        {
+          "name": "Create Session (for No-branch / edge cases)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "pm.collectionVariables.set('sessionId', body.sessionId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{baseUrl}}/session",
+              "host": ["{{baseUrl}}"],
+              "path": ["session"]
+            }
+          }
+        },
+        {
+          "name": "Answer that AI cannot classify (expect 422)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"blah blah whatever\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: HTTP 422 with {\"message\": \"Could not understand your answer...\"}. Session state / currentQuestionId should stay unchanged - verify with Get Session State."
+          }
+        },
+        {
+          "name": "Answer with blank text (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionId\": \"{{sessionId}}\",\n  \"answer\": \"   \"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/answer",
+              "host": ["{{baseUrl}}"],
+              "path": ["answer"]
+            },
+            "description": "Expected: HTTP 400, bean validation rejects a blank answer before it ever reaches the service layer."
+          }
+        },
+        {
+          "name": "Get unknown session (expect 404)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/session/does-not-exist",
+              "host": ["{{baseUrl}}"],
+              "path": ["session", "does-not-exist"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
