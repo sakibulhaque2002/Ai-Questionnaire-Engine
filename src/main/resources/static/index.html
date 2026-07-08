@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Questionnaire — Tester</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --panel: #ffffff;
+    --border: #dde0e6;
+    --text: #1a1d23;
+    --muted: #6b7280;
+    --accent: #3b6fe0;
+    --accent-hover: #2f5bc4;
+    --ok: #1f9d63;
+    --err: #d64545;
+    --warn: #b9781a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .app {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 20px;
+  }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: 1fr; }
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 20px;
+  }
+  .header {
+    grid-column: 1 / -1;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+  }
+  .panel h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled {
+    background: #e2e4ea;
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-secondary:hover { border-color: var(--accent); }
+  .session-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .session-id {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: #eef0f4;
+    padding: 4px 8px;
+    border-radius: 6px;
+    word-break: break-all;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-idle { background: #e5e7eb; color: var(--muted); }
+  .badge-active { background: rgba(59,111,224,0.12); color: var(--accent); }
+  .badge-done { background: rgba(31,157,99,0.12); color: var(--ok); }
+  .question-text {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    line-height: 1.4;
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .option-btn {
+    background: #f0f1f4;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 500;
+  }
+  .option-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+  }
+  .option-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .freeform-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .freeform-row input {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .freeform-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .freeform-row input:disabled {
+    opacity: 0.4;
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .banner {
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .banner-error {
+    background: rgba(214,69,69,0.08);
+    border: 1px solid rgba(214,69,69,0.3);
+    color: var(--err);
+  }
+  .banner-warn {
+    background: rgba(185,120,26,0.08);
+    border: 1px solid rgba(185,120,26,0.3);
+    color: var(--warn);
+  }
+  .banner-ok {
+    background: rgba(31,157,99,0.08);
+    border: 1px solid rgba(31,157,99,0.3);
+    color: var(--ok);
+  }
+  .empty-state {
+    color: var(--muted);
+    font-size: 14px;
+    text-align: center;
+    padding: 30px 10px;
+  }
+  .answers-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+  }
+  .answers-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .answers-list li:last-child { border-bottom: none; }
+  .answers-list .field {
+    color: var(--muted);
+  }
+  .answers-list .value {
+    font-weight: 600;
+    text-align: right;
+  }
+  .log {
+    max-height: 360px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .log-entry {
+    background: #f7f7f9;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11.5px;
+  }
+  .log-entry .log-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-family: -apple-system, sans-serif;
+  }
+  .log-entry .log-method {
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+  .method-POST { background: rgba(59,111,224,0.12); color: var(--accent-hover); }
+  .method-GET { background: rgba(31,157,99,0.12); color: var(--ok); }
+  .log-status-2 { color: var(--ok); }
+  .log-status-4, .log-status-5 { color: var(--err); }
+  .log-entry pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--text);
+  }
+  .row-2 {
+    display: flex;
+    gap: 8px;
+  }
+  .full-width { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>AI Questionnaire — Interactive Tester</h1>
+    <p class="subtitle">Talks directly to the Spring Boot API on this origin. A Postman-free way to poke at /session and /answer.</p>
+  </div>
+
+  <div class="panel">
+    <h2>Session</h2>
+    <div class="session-row">
+      <button id="startBtn" class="btn-primary">Start new session</button>
+      <button id="refreshBtn" class="btn-secondary" disabled>Refresh state</button>
+      <span id="statusBadge" class="badge badge-idle">No session</span>
+    </div>
+    <div id="sessionIdBox"></div>
+
+    <div id="banner"></div>
+
+    <div id="questionArea">
+      <div class="empty-state">Click "Start new session" to begin the questionnaire.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Collected answers</h2>
+    <ul id="answersList" class="answers-list">
+      <li class="empty-state" style="display:block; border:none;">No answers yet</li>
+    </ul>
+  </div>
+
+  <div class="panel full-width">
+    <h2>Request / response log</h2>
+    <div id="log" class="log">
+      <div class="empty-state">Requests you make will show up here as raw JSON.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = ""; // same-origin, served by Spring Boot from /static
+
+const state = {
+  sessionId: null,
+  currentQuestion: null,
+  completed: false,
+  forceOptionsOnly: false,
+};
+
+const el = {
+  startBtn: document.getElementById("startBtn"),
+  refreshBtn: document.getElementById("refreshBtn"),
+  statusBadge: document.getElementById("statusBadge"),
+  sessionIdBox: document.getElementById("sessionIdBox"),
+  banner: document.getElementById("banner"),
+  questionArea: document.getElementById("questionArea"),
+  answersList: document.getElementById("answersList"),
+  log: document.getElementById("log"),
+};
+
+el.startBtn.addEventListener("click", startSession);
+el.refreshBtn.addEventListener("click", refreshSession);
+
+function setBadge(kind, text) {
+  el.statusBadge.className = "badge badge-" + kind;
+  el.statusBadge.textContent = text;
+}
+
+function showBanner(kind, message) {
+  if (!message) {
+    el.banner.innerHTML = "";
+    return;
+  }
+  el.banner.innerHTML = `<div class="banner banner-${kind}">${escapeHtml(message)}</div>`;
+}
+
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function logRequest(method, path, reqBody, status, resBody) {
+  const empty = el.log.querySelector(".empty-state");
+  if (empty) empty.remove();
+
+  const statusClass = status >= 200 && status < 300 ? "log-status-2" : "log-status-4";
+  const entry = document.createElement("div");
+  entry.className = "log-entry";
+  entry.innerHTML = `
+    <div class="log-head">
+      <span><span class="log-method method-${method}">${method}</span> ${escapeHtml(path)}</span>
+      <span class="${statusClass}">${status ?? "ERR"}</span>
+    </div>
+    ${reqBody ? `<pre>&gt; ${escapeHtml(JSON.stringify(reqBody))}</pre>` : ""}
+    <pre>&lt; ${escapeHtml(JSON.stringify(resBody, null, 2))}</pre>
+  `;
+  el.log.prepend(entry);
+}
+
+async function callApi(method, path, body) {
+  let res, data;
+  try {
+    res = await fetch(API_BASE + path, {
+      method,
+      headers: body ? { "Content-Type": "application/json" } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const text = await res.text();
+    data = text ? JSON.parse(text) : {};
+  } catch (networkErr) {
+    logRequest(method, path, body, null, { networkError: String(networkErr) });
+    showBanner("error", "Could not reach the backend. Is it running on this origin?");
+    throw networkErr;
+  }
+  logRequest(method, path, body, res.status, data);
+  return { ok: res.ok, status: res.status, data };
+}
+
+async function startSession() {
+  showBanner();
+  el.startBtn.disabled = true;
+  const { ok, data } = await callApi("POST", "/session");
+  el.startBtn.disabled = false;
+  if (!ok) {
+    showBanner("error", data.message || "Failed to start session.");
+    return;
+  }
+  state.sessionId = data.sessionId;
+  state.currentQuestion = data.question;
+  state.completed = false;
+  state.forceOptionsOnly = false;
+
+  el.sessionIdBox.innerHTML = `<div class="session-id">${escapeHtml(state.sessionId)}</div>`;
+  el.refreshBtn.disabled = false;
+  setBadge("active", "In progress");
+  clearAnswers();
+  renderQuestion();
+}
+
+async function refreshSession() {
+  if (!state.sessionId) return;
+  showBanner();
+  const { ok, data } = await callApi("GET", `/session/${encodeURIComponent(state.sessionId)}`);
+  if (!ok) {
+    showBanner("error", data.message || "Failed to refresh session.");
+    if (data && data.message && data.message.toLowerCase().includes("no session")) {
+      resetToIdle();
+    }
+    return;
+  }
+  state.completed = data.completed;
+  state.currentQuestion = data.currentQuestion;
+  state.forceOptionsOnly = false;
+  renderAnswers(data.answers);
+  if (state.completed) {
+    renderCompleted();
+    setBadge("done", "Completed");
+  } else {
+    renderQuestion();
+    setBadge("active", "In progress");
+  }
+}
+
+function resetToIdle() {
+  state.sessionId = null;
+  state.currentQuestion = null;
+  state.completed = false;
+  el.sessionIdBox.innerHTML = "";
+  el.refreshBtn.disabled = true;
+  setBadge("idle", "No session");
+  el.questionArea.innerHTML = `<div class="empty-state">Click "Start new session" to begin the questionnaire.</div>`;
+  clearAnswers();
+}
+
+function clearAnswers() {
+  el.answersList.innerHTML = `<li class="empty-state" style="display:block; border:none;">No answers yet</li>`;
+}
+
+function renderAnswers(answers) {
+  const keys = Object.keys(answers || {});
+  if (keys.length === 0) {
+    clearAnswers();
+    return;
+  }
+  el.answersList.innerHTML = keys
+    .map(
+      (k) =>
+        `<li><span class="field">${escapeHtml(k)}</span><span class="value">${escapeHtml(String(answers[k]))}</span></li>`
+    )
+    .join("");
+}
+
+function renderCompleted() {
+  el.questionArea.innerHTML = `<div class="banner banner-ok" style="margin-top:12px;">Questionnaire completed. All answers are shown in the panel on the right.</div>`;
+}
+
+function renderQuestion() {
+  const q = state.currentQuestion;
+  if (!q) {
+    renderCompleted();
+    return;
+  }
+
+  const optionsHtml = (q.options || [])
+    .map(
+      (opt) =>
+        `<button class="option-btn" data-value="${escapeHtml(String(opt.label))}">${escapeHtml(opt.label)}</button>`
+    )
+    .join("");
+
+  const freeformDisabled = state.forceOptionsOnly ? "disabled" : "";
+  const freeformHint = state.forceOptionsOnly
+    ? `<div class="hint">Free-text answer wasn't understood — pick one of the options above to continue.</div>`
+    : `<div class="hint">Type a natural-language answer, or click one of the options above.</div>`;
+
+  el.questionArea.innerHTML = `
+    <p class="question-text">${escapeHtml(q.question)}</p>
+    <div class="options">${optionsHtml}</div>
+    <div class="freeform-row">
+      <input type="text" id="freeformInput" placeholder="Type your answer..." ${freeformDisabled} />
+      <button id="freeformSubmit" class="btn-primary" ${freeformDisabled}>Submit</button>
+    </div>
+    ${freeformHint}
+  `;
+
+  el.questionArea.querySelectorAll(".option-btn").forEach((btn) => {
+    btn.addEventListener("click", () => submitAnswer(btn.dataset.value));
+  });
+
+  const input = document.getElementById("freeformInput");
+  const submitBtn = document.getElementById("freeformSubmit");
+  submitBtn.addEventListener("click", () => {
+    const val = input.value.trim();
+    if (val) submitAnswer(val);
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !input.disabled) {
+      const val = input.value.trim();
+      if (val) submitAnswer(val);
+    }
+  });
+}
+
+function setQuestionAreaBusy(busy) {
+  el.questionArea.querySelectorAll("button, input").forEach((node) => {
+    node.disabled = busy || (node.id === "freeformInput" && state.forceOptionsOnly) || (node.id === "freeformSubmit" && state.forceOptionsOnly);
+  });
+}
+
+async function submitAnswer(answerText) {
+  if (!state.sessionId) return;
+  showBanner();
+  setQuestionAreaBusy(true);
+
+  const { ok, status, data } = await callApi("POST", "/answer", {
+    sessionId: state.sessionId,
+    answer: answerText,
+  });
+
+  if (ok) {
+    state.forceOptionsOnly = false;
+    renderAnswers(data.answers);
+    if (data.completed) {
+      state.completed = true;
+      state.currentQuestion = null;
+      setBadge("done", "Completed");
+      renderCompleted();
+      showBanner("ok", "Done — the questionnaire is complete.");
+    } else {
+      state.currentQuestion = data.nextQuestion;
+      renderQuestion();
+    }
+    return;
+  }
+
+  setQuestionAreaBusy(false);
+
+  if (status === 422) {
+    state.forceOptionsOnly = true;
+    showBanner("warn", data.message || "Couldn't understand that answer — please choose an option below.");
+    renderQuestion();
+  } else if (status === 404) {
+    showBanner("error", data.message || "Session not found — it may have expired. Start a new session.");
+    resetToIdle();
+  } else if (status === 409) {
+    showBanner("error", data.message || "This session is already completed.");
+  } else if (status === 400) {
+    showBanner("error", data.message || "Invalid request.");
+  } else if (status === 502) {
+    showBanner("error", data.message || "The AI provider call failed. Check API keys/config and try again.");
+  } else {
+    showBanner("error", data.message || `Unexpected error (status ${status}).`);
+  }
+}
+</script>
+</body>
+</html>
