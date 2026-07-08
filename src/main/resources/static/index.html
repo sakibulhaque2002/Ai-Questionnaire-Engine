@@ -305,7 +305,6 @@ const state = {
   sessionId: null,
   currentQuestion: null,
   completed: false,
-  forceOptionsOnly: false,
 };
 
 const el = {
@@ -390,7 +389,6 @@ async function startSession() {
   state.sessionId = data.sessionId;
   state.currentQuestion = data.question;
   state.completed = false;
-  state.forceOptionsOnly = false;
 
   el.sessionIdBox.innerHTML = `<div class="session-id">${escapeHtml(state.sessionId)}</div>`;
   el.refreshBtn.disabled = false;
@@ -412,7 +410,6 @@ async function refreshSession() {
   }
   state.completed = data.completed;
   state.currentQuestion = data.currentQuestion;
-  state.forceOptionsOnly = false;
   renderAnswers(data.answers);
   if (state.completed) {
     renderCompleted();
@@ -470,19 +467,14 @@ function renderQuestion() {
     )
     .join("");
 
-  const freeformDisabled = state.forceOptionsOnly ? "disabled" : "";
-  const freeformHint = state.forceOptionsOnly
-    ? `<div class="hint">Free-text answer wasn't understood — pick one of the options above to continue.</div>`
-    : `<div class="hint">Type a natural-language answer, or click one of the options above.</div>`;
-
   el.questionArea.innerHTML = `
     <p class="question-text">${escapeHtml(q.question)}</p>
     <div class="options">${optionsHtml}</div>
     <div class="freeform-row">
-      <input type="text" id="freeformInput" placeholder="Type your answer..." ${freeformDisabled} />
-      <button id="freeformSubmit" class="btn-primary" ${freeformDisabled}>Submit</button>
+      <input type="text" id="freeformInput" placeholder="Type your answer..." />
+      <button id="freeformSubmit" class="btn-primary">Submit</button>
     </div>
-    ${freeformHint}
+    <div class="hint">Type a natural-language answer, or click one of the options above. You can retry as many times as you need.</div>
   `;
 
   el.questionArea.querySelectorAll(".option-btn").forEach((btn) => {
@@ -505,7 +497,7 @@ function renderQuestion() {
 
 function setQuestionAreaBusy(busy) {
   el.questionArea.querySelectorAll("button, input").forEach((node) => {
-    node.disabled = busy || (node.id === "freeformInput" && state.forceOptionsOnly) || (node.id === "freeformSubmit" && state.forceOptionsOnly);
+    node.disabled = busy;
   });
 }
 
@@ -520,7 +512,6 @@ async function submitAnswer(answerText) {
   });
 
   if (ok) {
-    state.forceOptionsOnly = false;
     renderAnswers(data.answers);
     if (data.completed) {
       state.completed = true;
@@ -538,8 +529,7 @@ async function submitAnswer(answerText) {
   setQuestionAreaBusy(false);
 
   if (status === 422) {
-    state.forceOptionsOnly = true;
-    showBanner("warn", data.message || "Couldn't understand that answer — please choose an option below.");
+    showBanner("warn", data.message || "Couldn't understand that answer — try rephrasing, or pick an option below.");
     renderQuestion();
   } else if (status === 404) {
     showBanner("error", data.message || "Session not found — it may have expired. Start a new session.");
