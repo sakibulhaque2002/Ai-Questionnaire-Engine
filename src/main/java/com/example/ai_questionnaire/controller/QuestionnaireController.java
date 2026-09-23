@@ -1,8 +1,11 @@
 package com.example.ai_questionnaire.controller;
 
+import java.io.IOException;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.ai_questionnaire.dto.AnswerRequest;
 import com.example.ai_questionnaire.dto.AnswerResponse;
@@ -18,6 +23,7 @@ import com.example.ai_questionnaire.dto.CreateSessionResponse;
 import com.example.ai_questionnaire.dto.ErrorResponse;
 import com.example.ai_questionnaire.dto.QuestionDto;
 import com.example.ai_questionnaire.dto.SessionResponse;
+import com.example.ai_questionnaire.dto.TranscriptionResponse;
 import com.example.ai_questionnaire.model.Question;
 import com.example.ai_questionnaire.model.Session;
 import com.example.ai_questionnaire.provider.AIProviderException;
@@ -25,6 +31,7 @@ import com.example.ai_questionnaire.service.AnswerNotUnderstoodException;
 import com.example.ai_questionnaire.service.QuestionnaireCompletedException;
 import com.example.ai_questionnaire.service.SessionNotFoundException;
 import com.example.ai_questionnaire.service.SessionService;
+import com.example.ai_questionnaire.service.TranscriptionService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +46,8 @@ public class QuestionnaireController {
 
 	private final SessionService sessionService;
 
+	private final TranscriptionService transcriptionService;
+
 	@PostMapping("/session")
 	public CreateSessionResponse createSession() {
 		Session session = sessionService.createSession();
@@ -52,6 +61,19 @@ public class QuestionnaireController {
 		Question next = sessionService.getCurrentQuestion(session);
 		return new AnswerResponse(session.isCompleted(), session.getCollectedAnswers(),
 				next == null ? null : QuestionDto.from(next));
+	}
+
+	@PostMapping(path = "/transcribe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> transcribe(@RequestParam("audio") MultipartFile audio,
+			@RequestParam(value = "sessionId", required = false) String sessionId) throws IOException {
+		String contentType = audio.getContentType();
+		if (audio.isEmpty() || contentType == null || !contentType.startsWith("audio/")) {
+			return ResponseEntity.badRequest().body(new ErrorResponse("audio: must be a non-empty audio file"));
+		}
+		Question question = sessionId == null ? null
+				: sessionService.getCurrentQuestion(sessionService.getSession(sessionId));
+		String transcript = transcriptionService.transcribe(audio.getBytes(), contentType, question);
+		return ResponseEntity.ok(new TranscriptionResponse(transcript));
 	}
 
 	@GetMapping("/session/{sessionId}")

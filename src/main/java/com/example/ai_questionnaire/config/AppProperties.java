@@ -8,12 +8,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * answer classification - see AIProviderFactory.
  */
 @ConfigurationProperties(prefix = "app")
-public record AppProperties(Ai ai, Questionnaire questionnaire) {
+public record AppProperties(Ai ai, Questionnaire questionnaire, Voice voice) {
 
 	public record Ai(String provider) {
 	}
 
 	public record Questionnaire(String resource) {
+	}
+
+	public record Voice(String transcriptionModel) {
 	}
 
 }
