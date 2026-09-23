@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * A single questionnaire question, as defined in questionnaire.json.
+ * A single questionnaire question, as defined in selp.json.
  */
 @Data
 @NoArgsConstructor

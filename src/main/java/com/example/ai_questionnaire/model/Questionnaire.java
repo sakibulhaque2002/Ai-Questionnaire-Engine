@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Root object loaded from questionnaire.json. The whole question flow (including
+ * Root object loaded from selp.json. The whole question flow (including
  * branching) is data-driven from this structure - nothing is hardcoded in Java.
  */
 @Data

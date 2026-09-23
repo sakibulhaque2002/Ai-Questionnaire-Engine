@@ -54,7 +54,7 @@ public class SessionService {
 		Question currentQuestion = questionService.getQuestionById(session.getCurrentQuestionId());
 		Option chosenOption = aiService.resolveAnswer(currentQuestion, session.getCollectedAnswers(), rawAnswer);
 
-		session.getCollectedAnswers().put(currentQuestion.getField(), chosenOption.getValue());
+		session.getCollectedAnswers().put(currentQuestion.getField(), chosenOption.getKey());
 
 		Question nextQuestion = questionService.resolveNextQuestion(chosenOption);
 		if (nextQuestion == null) {

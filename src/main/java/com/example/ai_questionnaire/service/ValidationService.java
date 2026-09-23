@@ -9,7 +9,7 @@ import com.example.ai_questionnaire.model.Question;
 
 /**
  * Cheap pre-check performed before ever calling an AI provider. If the user's raw answer
- * already matches an option's label or value (case/whitespace-insensitively), there is
+ * already matches an option's context or key (case/whitespace-insensitively), there is
  * no ambiguity to resolve and the AI call can be skipped entirely.
  */
 @Service
@@ -21,11 +21,11 @@ public class ValidationService {
 	}
 
 	private boolean matches(Option option, String normalized) {
-		if (option.getLabel().equalsIgnoreCase(normalized)) {
+		if (option.getContext().equalsIgnoreCase(normalized)) {
 			return true;
 		}
-		Object value = option.getValue();
-		return value != null && value.toString().equalsIgnoreCase(normalized);
+		Object key = option.getKey();
+		return key != null && key.toString().equalsIgnoreCase(normalized);
 	}
 
 }

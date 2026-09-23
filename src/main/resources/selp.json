@@ -1,0 +1,136 @@
+{
+  "questionnaireId": "sexual-harassment-001",
+  "title": "যৌন হয়রানি সংক্রান্ত আইনি সহায়তা",
+  "startQuestionId": 1,
+  "questions": [
+    {
+      "id": 1,
+      "question": "আপনার কী ধরনের আইনি সমস্যা হয়েছে?",
+      "field": "legalProblem",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "যৌন হয়রানি",
+          "nextQuestionId": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "কী ধরনের যৌন হয়রানির শিকার হয়েছেন?",
+      "field": "harassmentType",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "মৌখিক (অশালীন মন্তব্য, কৌতুক, অবাঞ্ছিত প্রশংসা)",
+          "nextQuestionId": 3
+        },
+        {
+          "key": "option_2",
+          "context": "শারীরিক (স্পর্শ, ইঙ্গিত, জোরপূর্বক ঘনিষ্ঠতা)",
+          "nextQuestionId": 3
+        },
+        {
+          "key": "option_3",
+          "context": "অনলাইন (কুরুচিপূর্ণ বার্তা/ছবি, ব্ল্যাকমেইল)",
+          "nextQuestionId": 3
+        },
+        {
+          "key": "option_4",
+          "context": "সুবিধার বিনিময়ে যৌন সুবিধা দাবি (কুইড প্রো কো)",
+          "nextQuestionId": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "ঘটনাটি কোথায় ঘটেছে?",
+      "field": "incidentLocation",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "কর্মক্ষেত্র",
+          "nextQuestionId": 4
+        },
+        {
+          "key": "option_2",
+          "context": "শিক্ষা প্রতিষ্ঠান (স্কুল/কলেজ/বিশ্ববিদ্যালয়)",
+          "nextQuestionId": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "আপনার প্রতিষ্ঠানে কি কোনো অভিযোগ কমিটি আছে?",
+      "field": "institutionalComplaintMechanism",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "প্রতিষ্ঠানে অভিযোগ কমিটি আছে",
+          "nextQuestionId": 5
+        },
+        {
+          "key": "option_2",
+          "context": "প্রতিষ্ঠানে কোনো অভিযোগ কমিটি নেই",
+          "nextQuestionId": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "যে ব্যক্তি হয়রানি করেছেন, তিনি কি আপনার পরিচিত কেউ?",
+      "field": "harasserIdentity",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "পরিচিত ব্যক্তি (বন্ধু/আত্মীয়/সহকর্মী)",
+          "nextQuestionId": 6
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "অভিযোগ করার বিষয়ে আপনার কোনো আশঙ্কা বা ভুল ধারণা আছে কি, যেমন মনে হচ্ছে অভিযোগ করলেও কিছুই হবে না?",
+      "field": "misconception",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "মনে করছেন অভিযোগ করলে কিছুই হবে না",
+          "nextQuestionId": 7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "এই ঘটনায় আপনি কি থানায় কোনো অভিযোগ দায়ের করেছেন?",
+      "field": "complaintStatus",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "থানায় অভিযোগ দায়ের করা হয়েছে",
+          "nextQuestionId": 8
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "এই ঘটনার কারণে আপনার কি চিকিৎসা বা মানসিক সহায়তার প্রয়োজন?",
+      "field": "supportNeeded",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "option_1",
+          "context": "চিকিৎসা/মানসিক সহায়তা প্রয়োজন",
+          "nextQuestionId": null
+        }
+      ]
+    }
+  ]
+}

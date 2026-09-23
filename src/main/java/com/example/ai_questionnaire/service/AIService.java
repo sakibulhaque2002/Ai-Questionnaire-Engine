@@ -40,7 +40,7 @@ public class AIService {
 		}
 
 		ClassificationRequest request = new ClassificationRequest(currentAnswers, question.getQuestion(),
-				questionService.getAllowedOptionLabels(question), rawAnswer);
+				questionService.getAllowedOptionChoices(question), rawAnswer);
 
 		ClassificationResult result = providerFactory.getProvider().classify(request);
 
@@ -48,8 +48,8 @@ public class AIService {
 			throw new AnswerNotUnderstoodException(question.getQuestion());
 		}
 
-		// Defensive: never trust an option label the AI returns that isn't actually allowed.
-		return questionService.findOptionByLabel(question, result.selectedOption())
+		// Defensive: never trust an option key the AI returns that isn't actually allowed.
+		return questionService.findOptionByKey(question, result.selectedOption())
 			.orElseThrow(() -> new AnswerNotUnderstoodException(question.getQuestion()));
 	}
 

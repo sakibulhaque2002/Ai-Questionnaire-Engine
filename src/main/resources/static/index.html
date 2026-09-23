@@ -463,7 +463,7 @@ function renderQuestion() {
   const optionsHtml = (q.options || [])
     .map(
       (opt) =>
-        `<button class="option-btn" data-value="${escapeHtml(String(opt.label))}">${escapeHtml(opt.label)}</button>`
+        `<button class="option-btn" data-value="${escapeHtml(String(opt.context))}">${escapeHtml(opt.context)}</button>`
     )
     .join("");
 
