@@ -10,8 +10,18 @@
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
+          "key": "2aca3fe7-d51e-47da-a40f-9f6e1abd4d87",
           "context": "যৌন হয়রানি",
+          "nextQuestionId": 2
+        },
+        {
+          "key": "7f3b9c21-6e84-4a52-b1d7-93c8e5f01462",
+          "context": "যৌন হয়রানির হুমকি বা ভয় দেখানো",
+          "nextQuestionId": 2
+        },
+        {
+          "key": "c84e17a5-29d3-4b61-9f08-72ac53e6d914",
+          "context": "যৌন হয়রানি সংক্রান্ত অন্য কোনো সমস্যা",
           "nextQuestionId": 2
         }
       ]
@@ -23,23 +33,18 @@
       "type": "single_select",
       "options": [
         {
-          "key": "2aca3fe7-d51e-47da-a40f-9f6e1abd4d87",
-          "context": "মৌখিক (অশালীন মন্তব্য, কৌতুক, অবাঞ্ছিত প্রশংসা)",
+          "key": "a91d5f32-4c78-46e0-b285-17fa93d6c401",
+          "context": "মৌখিক বা লিখিত হয়রানি (অশালীন মন্তব্য, কৌতুক, বার্তা)",
           "nextQuestionId": 3
         },
         {
-          "key": "option_2",
-          "context": "শারীরিক (স্পর্শ, ইঙ্গিত, জোরপূর্বক ঘনিষ্ঠতা)",
+          "key": "d63b8a19-7e24-4f51-a902-38c5de71b846",
+          "context": "শারীরিক হয়রানি (অনাকাঙ্ক্ষিত স্পর্শ, জোরপূর্বক ঘনিষ্ঠতা)",
           "nextQuestionId": 3
         },
         {
-          "key": "option_3",
-          "context": "অনলাইন (কুরুচিপূর্ণ বার্তা/ছবি, ব্ল্যাকমেইল)",
-          "nextQuestionId": 3
-        },
-        {
-          "key": "option_4",
-          "context": "সুবিধার বিনিময়ে যৌন সুবিধা দাবি (কুইড প্রো কো)",
+          "key": "e27c4d85-913a-42f6-b708-56ab39de1207",
+          "context": "অনলাইন হয়রানি (অশালীন ছবি/বার্তা, ব্ল্যাকমেইল)",
           "nextQuestionId": 3
         }
       ]
@@ -51,83 +56,409 @@
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "কর্মক্ষেত্র",
+          "key": "f52a8c31-6d47-4e09-b915-73dc26ab8401",
+          "context": "কর্মক্ষেত্রে",
           "nextQuestionId": 4
         },
         {
-          "key": "option_2",
-          "context": "শিক্ষা প্রতিষ্ঠান (স্কুল/কলেজ/বিশ্ববিদ্যালয়)",
+          "key": "b17d63e4-92f8-4a51-c806-35ea79cd2148",
+          "context": "শিক্ষা প্রতিষ্ঠানে",
+          "nextQuestionId": 4
+        },
+        {
+          "key": "6c94e2a7-351f-48bd-a170-82df53ce6904",
+          "context": "অনলাইন বা সামাজিক যোগাযোগমাধ্যমে",
           "nextQuestionId": 4
         }
       ]
     },
     {
       "id": 4,
-      "question": "আপনার প্রতিষ্ঠানে কি কোনো অভিযোগ কমিটি আছে?",
-      "field": "institutionalComplaintMechanism",
+      "question": "হয়রানিকারী ব্যক্তি আপনার সঙ্গে কী ধরনের সম্পর্কের?",
+      "field": "harasserRelationship",
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "প্রতিষ্ঠানে অভিযোগ কমিটি আছে",
+          "key": "3e71b9c4-58a2-46d0-9f37-c12584ea7608",
+          "context": "সহকর্মী বা সহপাঠী",
           "nextQuestionId": 5
         },
         {
-          "key": "option_2",
-          "context": "প্রতিষ্ঠানে কোনো অভিযোগ কমিটি নেই",
+          "key": "8a45d2f7-1c63-4b90-ae28-57dc31f90462",
+          "context": "শিক্ষক, কর্মকর্তা বা ঊর্ধ্বতন ব্যক্তি",
+          "nextQuestionId": 5
+        },
+        {
+          "key": "c39f17a6-824e-4d51-b708-69ea35dc1427",
+          "context": "পরিচিত বা অপরিচিত অন্য ব্যক্তি",
           "nextQuestionId": 5
         }
       ]
     },
     {
       "id": 5,
-      "question": "যে ব্যক্তি হয়রানি করেছেন, তিনি কি আপনার পরিচিত কেউ?",
-      "field": "harasserIdentity",
+      "question": "হয়রানির ঘটনাটি কীভাবে ঘটেছিল?",
+      "field": "incidentNature",
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "পরিচিত ব্যক্তি (বন্ধু/আত্মীয়/সহকর্মী)",
+          "key": "d81a36f5-47c2-4e90-b719-25ce68ab1034",
+          "context": "অনাকাঙ্ক্ষিত মন্তব্য, কথা বা প্রস্তাবের মাধ্যমে",
+          "nextQuestionId": 6
+        },
+        {
+          "key": "5f92c7a1-63e4-48bd-b305-71da26ec8490",
+          "context": "অনাকাঙ্ক্ষিত স্পর্শ বা শারীরিক আচরণের মাধ্যমে",
+          "nextQuestionId": 6
+        },
+        {
+          "key": "a64e18d3-9b57-42f0-c821-36fd75be4902",
+          "context": "বার্তা, ছবি, ভিডিও বা অনলাইন যোগাযোগের মাধ্যমে",
           "nextQuestionId": 6
         }
       ]
     },
     {
       "id": 6,
-      "question": "অভিযোগ করার বিষয়ে আপনার কোনো আশঙ্কা বা ভুল ধারণা আছে কি, যেমন মনে হচ্ছে অভিযোগ করলেও কিছুই হবে না?",
-      "field": "misconception",
+      "question": "হয়রানিকারী কি কোনো সুবিধা দেওয়া বা ক্ষতি করার সঙ্গে যৌন আচরণকে যুক্ত করেছিলেন?",
+      "field": "quidProQuo",
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "মনে করছেন অভিযোগ করলে কিছুই হবে না",
+          "key": "7b35d9e2-146a-4f80-c627-58ae31fd9045",
+          "context": "সুবিধা দেওয়ার বিনিময়ে যৌন সুবিধা চাওয়া হয়েছে",
+          "nextQuestionId": 7
+        },
+        {
+          "key": "e92c41a7-5386-4d60-b175-26fa83de9014",
+          "context": "যৌন প্রস্তাব প্রত্যাখ্যান করলে ক্ষতির হুমকি দেওয়া হয়েছে",
+          "nextQuestionId": 7
+        },
+        {
+          "key": "4c76a8f1-925b-43de-b609-17ea52cd3840",
+          "context": "এ ধরনের কোনো শর্ত বা হুমকি ছিল না",
           "nextQuestionId": 7
         }
       ]
     },
     {
       "id": 7,
-      "question": "এই ঘটনায় আপনি কি থানায় কোনো অভিযোগ দায়ের করেছেন?",
-      "field": "complaintStatus",
+      "question": "হয়রানির ঘটনা কতবার ঘটেছে?",
+      "field": "incidentFrequency",
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "থানায় অভিযোগ দায়ের করা হয়েছে",
+          "key": "b58e21c4-739d-46f0-a825-31dc67fa9042",
+          "context": "একবার ঘটেছে",
+          "nextQuestionId": 8
+        },
+        {
+          "key": "e14a63f8-285c-49b7-d031-76ca52de9405",
+          "context": "একাধিকবার ঘটেছে",
+          "nextQuestionId": 8
+        },
+        {
+          "key": "6d93f2a5-814e-4c70-b629-45ae17dc3801",
+          "context": "নিয়মিত বা চলমানভাবে ঘটছে",
           "nextQuestionId": 8
         }
       ]
     },
     {
       "id": 8,
-      "question": "এই ঘটনার কারণে আপনার কি চিকিৎসা বা মানসিক সহায়তার প্রয়োজন?",
+      "question": "ঘটনার সময় আপনার প্রতিক্রিয়া কী ছিল?",
+      "field": "victimResponse",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "c72a15e9-436b-4d80-b951-68fd23ac1707",
+          "context": "সঙ্গে সঙ্গে আপত্তি বা প্রতিবাদ করেছি",
+          "nextQuestionId": 9
+        },
+        {
+          "key": "9f34d7a2-681c-45be-a520-13dc76e89401",
+          "context": "ভয় বা পরিস্থিতির কারণে তখন কোনো প্রতিক্রিয়া জানাতে পারিনি",
+          "nextQuestionId": 9
+        },
+        {
+          "key": "e51b86c3-297a-4f62-d708-34ae91fd5206",
+          "context": "পরে বিষয়টি নিয়ে আপত্তি বা প্রতিবাদ করেছি",
+          "nextQuestionId": 9
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "ঘটনার কোনো প্রমাণ আপনার কাছে আছে কি?",
+      "field": "evidenceAvailability",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "a83d52f7-614b-49c0-e728-35da16bc9041",
+          "context": "বার্তা, ছবি, ভিডিও বা অডিও প্রমাণ আছে",
+          "nextQuestionId": 10
+        },
+        {
+          "key": "f16c94a2-837e-4d51-b260-72ae35dc1908",
+          "context": "সাক্ষী বা অন্য ব্যক্তির মাধ্যমে প্রমাণ করা সম্ভব",
+          "nextQuestionId": 10
+        },
+        {
+          "key": "5b27e8d1-469a-43f0-c815-91dc62fa7304",
+          "context": "আমার কাছে বর্তমানে কোনো প্রমাণ নেই",
+          "nextQuestionId": 10
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "আপনি কি ঘটনাটি সম্পর্কে কারও সঙ্গে কথা বলেছেন?",
+      "field": "disclosureStatus",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "d49a71e5-326c-48f0-b815-63ca27de9401",
+          "context": "পরিবার বা ঘনিষ্ঠ কারও সঙ্গে কথা বলেছি",
+          "nextQuestionId": 11
+        },
+        {
+          "key": "8c63f2a9-157b-4e70-b426-95da31ec5804",
+          "context": "প্রতিষ্ঠানের দায়িত্বশীল কারও সঙ্গে কথা বলেছি",
+          "nextQuestionId": 11
+        },
+        {
+          "key": "e75b29c4-841a-46d3-a610-37fc52de9081",
+          "context": "এখনও কারও সঙ্গে কথা বলিনি",
+          "nextQuestionId": 11
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "আপনার প্রতিষ্ঠানে কি যৌন হয়রানি সংক্রান্ত অভিযোগ জানানোর কোনো ব্যবস্থা আছে?",
+      "field": "institutionalComplaintMechanism",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "3a96d7e1-528c-4f40-b813-67de25ca1904",
+          "context": "অভিযোগ কমিটি বা নির্দিষ্ট ব্যবস্থা আছে",
+          "nextQuestionId": 12
+        },
+        {
+          "key": "b41e85c7-693a-42f0-d728-15ac37de9046",
+          "context": "ব্যবস্থা আছে কি না আমি জানি না",
+          "nextQuestionId": 12
+        },
+        {
+          "key": "f68c32a5-174d-4e91-b607-82da45ec3901",
+          "context": "কোনো অভিযোগ ব্যবস্থা নেই বলে জানি",
+          "nextQuestionId": 12
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "আপনি কি কোনো আনুষ্ঠানিক অভিযোগ করেছেন?",
+      "field": "formalComplaintStatus",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "7d25f8c1-436a-49e0-b672-18ac53de9405",
+          "context": "প্রতিষ্ঠানে আনুষ্ঠানিক অভিযোগ করেছি",
+          "nextQuestionId": 13
+        },
+        {
+          "key": "c91e64a7-285b-4f30-b518-73da26ec9041",
+          "context": "থানায় বা আইনশৃঙ্খলা রক্ষাকারী বাহিনীর কাছে অভিযোগ করেছি",
+          "nextQuestionId": 13
+        },
+        {
+          "key": "e53a17d9-648c-42f0-b731-96dc25ce8104",
+          "context": "এখনও কোনো আনুষ্ঠানিক অভিযোগ করিনি",
+          "nextQuestionId": 13
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "question": "অভিযোগ করার পর কী হয়েছে?",
+      "field": "complaintOutcome",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "a37e92c5-614b-48f0-d826-51dc73ea9402",
+          "context": "অভিযোগের বিষয়ে তদন্ত বা ব্যবস্থা নেওয়া হয়েছে",
+          "nextQuestionId": 14
+        },
+        {
+          "key": "5e81c4a7-329d-46f0-b752-68da17fc9043",
+          "context": "অভিযোগ করা হলেও এখনো কোনো ব্যবস্থা নেওয়া হয়নি",
+          "nextQuestionId": 14
+        },
+        {
+          "key": "d64b27f9-853a-41e0-c716-39ae52dc1804",
+          "context": "অভিযোগ গ্রহণ করা হয়নি বা প্রত্যাখ্যান করা হয়েছে",
+          "nextQuestionId": 14
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "question": "আপনি কি থানায় বা আইনশৃঙ্খলা রক্ষাকারী বাহিনীর কাছে অভিযোগ করতে চান?",
+      "field": "policeComplaintIntent",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "f29c63a1-745e-4b80-d132-58ae91dc6705",
+          "context": "হ্যাঁ, অভিযোগ করতে চাই",
+          "nextQuestionId": 15
+        },
+        {
+          "key": "8b51d7e4-263a-49f0-a825-74dc36ce9102",
+          "context": "অভিযোগ করতে চাই, তবে কীভাবে করতে হয় জানি না",
+          "nextQuestionId": 15
+        },
+        {
+          "key": "c46e19a7-582d-4f31-b708-93da25ec6140",
+          "context": "এই মুহূর্তে অভিযোগ করতে চাই না",
+          "nextQuestionId": 15
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "question": "অভিযোগ করতে দ্বিধা বা আশঙ্কার প্রধান কারণ কী?",
+      "field": "complaintConcern",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "e73a41c9-625b-48d0-f816-35dc92ae1704",
+          "context": "প্রতিশোধ, চাকরি বা পড়াশোনায় ক্ষতির আশঙ্কা",
+          "nextQuestionId": 16
+        },
+        {
+          "key": "b28d65f1-934a-4c70-a821-57ae39dc1605",
+          "context": "সামাজিক চাপ, অপমান বা গোপনীয়তা প্রকাশের আশঙ্কা",
+          "nextQuestionId": 16
+        },
+        {
+          "key": "6f94c2a7-518e-43d0-b761-82de35ea4906",
+          "context": "অভিযোগ করে কোনো ফল হবে না বলে মনে হচ্ছে",
+          "nextQuestionId": 16
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "question": "ঘটনার কারণে আপনার ওপর কী ধরনের প্রভাব পড়েছে?",
+      "field": "incidentImpact",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "a15d83f7-462c-49e0-b728-31ca65de9042",
+          "context": "মানসিক চাপ, ভয় বা উদ্বেগ তৈরি হয়েছে",
+          "nextQuestionId": 17
+        },
+        {
+          "key": "d82e47c1-695a-4f30-b516-73ae28dc9104",
+          "context": "কাজ, পড়াশোনা বা দৈনন্দিন জীবনে সমস্যা হয়েছে",
+          "nextQuestionId": 17
+        },
+        {
+          "key": "f63b19e4-827c-45a0-d712-96de34ca5801",
+          "context": "মানসিক ও দৈনন্দিন উভয় ক্ষেত্রেই প্রভাব পড়েছে",
+          "nextQuestionId": 17
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "question": "এই ঘটনার কারণে আপনার কি চিকিৎসা বা মানসিক সহায়তা প্রয়োজন?",
       "field": "supportNeeded",
       "type": "single_select",
       "options": [
         {
-          "key": "option_1",
-          "context": "চিকিৎসা/মানসিক সহায়তা প্রয়োজন",
+          "key": "7c41e9a5-283d-46f0-b712-58da63ec9401",
+          "context": "চিকিৎসা সহায়তা প্রয়োজন",
+          "nextQuestionId": 18
+        },
+        {
+          "key": "e95b27c4-614a-48d0-a731-36dc82fe1509",
+          "context": "মানসিক বা কাউন্সেলিং সহায়তা প্রয়োজন",
+          "nextQuestionId": 18
+        },
+        {
+          "key": "4a68d3f1-927c-45e0-b516-73dc29ae8402",
+          "context": "এই মুহূর্তে কোনো চিকিৎসা বা মানসিক সহায়তা প্রয়োজন নেই",
+          "nextQuestionId": 18
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "question": "আপনি এখন কী ধরনের আইনি সহায়তা চান?",
+      "field": "legalSupportNeeded",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "b76e31c5-492a-4f80-d217-65ac93de1804",
+          "context": "অভিযোগ করার প্রক্রিয়া ও অধিকার সম্পর্কে জানতে চাই",
+          "nextQuestionId": 19
+        },
+        {
+          "key": "c53a87f1-624d-49e0-b718-36da25ec9104",
+          "context": "আইনি পদক্ষেপ নেওয়ার বিষয়ে সহায়তা চাই",
+          "nextQuestionId": 19
+        },
+        {
+          "key": "e19d45a7-836c-42f0-b651-72dc38ae9405",
+          "context": "বর্তমানে শুধু আমার আইনগত অধিকার ও সম্ভাব্য পদক্ষেপ জানতে চাই",
+          "nextQuestionId": 19
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "question": "আপনি কি আপনার পরিচয় ও অভিযোগের তথ্য গোপন রাখতে চান?",
+      "field": "confidentialityPreference",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "5a82d6f1-347c-49e0-b715-63dc28ae9504",
+          "context": "হ্যাঁ, পরিচয় গোপন রাখা খুব গুরুত্বপূর্ণ",
+          "nextQuestionId": 20
+        },
+        {
+          "key": "d47c91a5-628e-4f30-b716-85ae32dc1907",
+          "context": "যতটা সম্ভব গোপনীয়তা বজায় রাখতে চাই",
+          "nextQuestionId": 20
+        },
+        {
+          "key": "f31e75c8-492a-46d0-b827-53ac91de6402",
+          "context": "পরিচয় গোপন রাখা নিয়ে বিশেষ উদ্বেগ নেই",
+          "nextQuestionId": 20
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "question": "এই মুহূর্তে আপনার সবচেয়ে জরুরি প্রয়োজন কী?",
+      "field": "immediateNeed",
+      "type": "single_select",
+      "options": [
+        {
+          "key": "8d52a7f4-316c-49e0-b728-65ac31de9402",
+          "context": "নিরাপত্তা নিশ্চিত করা এবং হয়রানি বন্ধ করা",
+          "nextQuestionId": null
+        },
+        {
+          "key": "c71e46a9-825b-43f0-d612-39ae57dc1804",
+          "context": "আইনি অভিযোগ ও পরবর্তী পদক্ষেপ সম্পর্কে সহায়তা পাওয়া",
+          "nextQuestionId": null
+        },
+        {
+          "key": "e94b31c6-572a-48f0-a726-81dc35ae4907",
+          "context": "চিকিৎসা, মানসিক বা অন্যান্য সহায়তা পাওয়া",
           "nextQuestionId": null
         }
       ]

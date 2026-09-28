@@ -113,7 +113,7 @@
   }
   .options {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 8px;
     margin-bottom: 16px;
   }
@@ -122,6 +122,9 @@
     border: 1px solid var(--border);
     color: var(--text);
     font-weight: 500;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
   }
   .option-btn:hover {
     border-color: var(--accent);
@@ -152,14 +155,29 @@
   .freeform-row input:disabled {
     opacity: 0.4;
   }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    flex-shrink: 0;
+    border-radius: 50%;
+    transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .icon-btn svg { display: block; }
+  .icon-btn:hover:not(:disabled) { transform: scale(1.06); }
+  .icon-btn:active:not(:disabled) { transform: scale(0.94); }
+  .icon-btn.btn-primary {
+    box-shadow: 0 2px 6px rgba(59,111,224,0.35);
+  }
   .mic-btn {
     background: #ffffff;
     border: 1px solid var(--border);
     color: var(--text);
-    font-weight: 500;
-    white-space: nowrap;
   }
-  .mic-btn:hover { border-color: var(--accent); }
+  .mic-btn:hover { border-color: var(--accent); color: var(--accent-hover); }
   .mic-btn.recording {
     background: var(--err);
     border-color: var(--err);
@@ -169,6 +187,8 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+  .spin { animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .hint {
     font-size: 12px;
     color: var(--muted);
@@ -293,6 +313,11 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+const ICON_MIC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
+const ICON_STOP = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>`;
+const ICON_SEND = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>`;
+const ICON_LOADER = `<svg class="spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="9" stroke-dasharray="42" stroke-dashoffset="14"/></svg>`;
+
 async function callApi(method, path, body) {
   let res, data;
   try {
@@ -379,8 +404,8 @@ function renderQuestion() {
     <div class="options">${optionsHtml}</div>
     <div class="freeform-row">
       <input type="text" id="freeformInput" placeholder="Type your answer..." />
-      <button id="micBtn" class="mic-btn" title="Speak your answer">🎤 Speak</button>
-      <button id="freeformSubmit" class="btn-primary">Submit</button>
+      <button id="micBtn" class="icon-btn mic-btn" title="Speak your answer" aria-label="Speak your answer">${ICON_MIC}</button>
+      <button id="freeformSubmit" class="icon-btn btn-primary" title="Submit answer" aria-label="Submit answer">${ICON_SEND}</button>
     </div>
     <div class="hint">Type or speak a natural-language answer (Bengali, English or Banglish), or click one of the options above. Spoken answers are transcribed into the box so you can check them before submitting.</div>
   `;
@@ -454,12 +479,16 @@ async function toggleRecording(micBtn, input) {
   };
   recorder.start();
   micBtn.classList.add("recording");
-  micBtn.textContent = "⏹ Stop";
+  micBtn.innerHTML = ICON_STOP;
+  micBtn.title = "Stop recording";
+  micBtn.setAttribute("aria-label", "Stop recording");
 }
 
 async function transcribeRecording(blob, micBtn, input) {
   micBtn.classList.remove("recording");
-  micBtn.textContent = "Transcribing…";
+  micBtn.innerHTML = ICON_LOADER;
+  micBtn.title = "Transcribing…";
+  micBtn.setAttribute("aria-label", "Transcribing");
   setQuestionAreaBusy(true);
 
   let status = null, data = {};
@@ -478,7 +507,9 @@ async function transcribeRecording(blob, micBtn, input) {
   }
 
   setQuestionAreaBusy(false);
-  micBtn.textContent = "🎤 Speak";
+  micBtn.innerHTML = ICON_MIC;
+  micBtn.title = "Speak your answer";
+  micBtn.setAttribute("aria-label", "Speak your answer");
 
   if (status === 200) {
     if (data.transcript) {
