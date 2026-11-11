@@ -1,8 +1,8 @@
 # AI Questionnaire Engine
 
-An AI integration component built for a production legal assistance system that helps people with limited financial resources access legal guidance. This service turns natural-language replies into structured questionnaire answers, helping the surrounding system collect information for its legal assistance workflow.
+An AI-powered questionnaire engine developed as a proof of concept (PoC) for a legal-assistance system, using Spring Boot and Spring AI to interpret natural-language responses and manage configurable question flows.
 
-This repository focuses on questionnaire intake and answer classification within that larger system. The surrounding application provides the broader legal assistance workflow; this component produces structured intake data rather than generating legal advice.
+The intended legal-assistance system aims to help people with limited financial resources access legal guidance. This PoC focuses on questionnaire intake and answer classification, producing structured intake data for the broader legal assistance workflow rather than generating legal advice. Sessions are stored in memory for the prototype.
 
 ## Problem and approach
 
